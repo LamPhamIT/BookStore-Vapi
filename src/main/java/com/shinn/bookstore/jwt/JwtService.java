@@ -17,31 +17,39 @@ import java.util.function.Function;
 public class JwtService {
 
     private static final String JWT_SECRET_KEY = "lampham";
-//    @Value("${ra.jwt.expiration}")
-    private static final int JWT_EXPIRATION =86400000;
+    //    @Value("${ra.jwt.expiration}")
+    private static final int JWT_ACCESS_EXPIRATION = 60 * 60 * 24 * 1000;
+    private static final int JWT_REFRESH_EXPIRATION = 86400000 * 7;
 
 
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateAccessToken(UserDetails userDetails) {
+        return buildToken(new HashMap<>(), userDetails, JWT_ACCESS_EXPIRATION);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
+    public String generateRefreshToken(UserDetails userDetails) {
+        return buildToken(new HashMap<>(), userDetails, JWT_REFRESH_EXPIRATION);
+    }
+
+    public String buildToken(Map<String, Object> extraClaims, UserDetails userDetails, int expriation) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION))
+                .setExpiration(new Date(System.currentTimeMillis() + expriation))
                 .signWith(SignatureAlgorithm.HS256, JWT_SECRET_KEY)
                 .compact();
     }
+
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
     }
+
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        Claims claims =  extractAllClaims(token);
+        Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
+
     private Claims extractAllClaims(String token) {
         return Jwts
                 .parser()
@@ -49,6 +57,7 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
     private Date extractExpiration(String token) {
         return extractClaim(token, Claims::getExpiration);
     }

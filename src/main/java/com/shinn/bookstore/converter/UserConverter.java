@@ -35,4 +35,18 @@ public class UserConverter {
         }
         return user;
     }
+    public UserDTO toUserDTO(UserEntity userEntity) {
+        if(userEntity != null) {
+            UserDTO userDTO =  new UserDTO();
+            BeanUtils.copyProperties(userEntity, userDTO);
+            if(userEntity.getRoleEntities() != null) {
+                List<RoleDTO> roleDTOS = new ArrayList<>();
+                for(RoleEntity roleEntity : userEntity.getRoleEntities()) {
+                    RoleDTO roleDTO = roleConverter.toRoleDTO(roleEntity);
+                }
+                userDTO.setRoles(roleDTOS);
+            }
+        }
+        return null;
+    }
 }

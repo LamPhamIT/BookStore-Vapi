@@ -1,6 +1,5 @@
-package com.shinn.bookstore.security;
+package com.shinn.bookstore.dto;
 
-import com.shinn.bookstore.model.RoleEntity;
 import com.shinn.bookstore.model.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,7 +8,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,13 +28,10 @@ public class CustomUserDetail implements UserDetails {
         return this.authorities;
     }
 
-
-
-    // Convert user to userdetail
     public static CustomUserDetail mapUserToUserDetail(UserEntity user) {
         // Get list role of user;
         List<GrantedAuthority> listAuthorities = user.getRoleEntities().stream()
-                .map(roleEntity -> new SimpleGrantedAuthority(roleEntity.getName().name()))
+                .map(roleEntity -> new SimpleGrantedAuthority("ROLE_" +roleEntity.getName().name()))
                 .collect(Collectors.toList());
         return new CustomUserDetail(
                 user.getId(),

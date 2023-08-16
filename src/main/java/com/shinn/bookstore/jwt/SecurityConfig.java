@@ -56,8 +56,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/api/auth/**")
                 .permitAll()
-                .requestMatchers("/hello")
+                .requestMatchers("/test/auth/authen")
                 .authenticated()
+                .requestMatchers("/test/auth/author").hasRole("ADMIN")
                 .and()
                 .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();

@@ -1,0 +1,1 @@
+INSERT INTO role(code, name) VALUES ('admin', 'ADMIN'), ('moderator', 'MODERATOR'), ('user', 'USER');

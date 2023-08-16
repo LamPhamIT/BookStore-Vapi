@@ -2,7 +2,7 @@ package com.shinn.bookstore.service.impl;
 
 import com.shinn.bookstore.model.UserEntity;
 import com.shinn.bookstore.repository.UserRepository;
-import com.shinn.bookstore.security.CustomUserDetail;
+import com.shinn.bookstore.dto.CustomUserDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

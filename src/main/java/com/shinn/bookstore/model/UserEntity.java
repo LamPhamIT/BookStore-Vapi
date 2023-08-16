@@ -4,11 +4,13 @@ package com.shinn.bookstore.model;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "User")
 @Data
@@ -32,6 +34,9 @@ public class UserEntity extends BaseEntity {
 
     @Column
     private String address;
+
+    @OneToMany(mappedBy = "user")
+    private List<TokenEntity> tokenEntities;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",

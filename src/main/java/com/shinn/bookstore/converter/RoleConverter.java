@@ -14,4 +14,10 @@ public class RoleConverter {
         BeanUtils.copyProperties(roleDTO, roleEntity);
         return roleEntity;
     }
+    public RoleDTO toRoleDTO(RoleEntity roleEntity) {
+        RoleDTO roleDTO = new RoleDTO();
+        BeanUtils.copyProperties(roleEntity, roleDTO);
+        return roleDTO;
+    }
+
 }
